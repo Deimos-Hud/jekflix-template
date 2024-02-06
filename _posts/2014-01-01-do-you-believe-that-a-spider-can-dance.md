@@ -1,7 +1,7 @@
 ---
 date: 2017-06-08 12:00:00
 layout: post
-title: Do you believe that a spider can dance?
+title: Why boycotting Huddle House for something that happened when I was 12 is ok
 subtitle: Lorem ipsum dolor sit amet, consectetur adipisicing elit.
 description: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 category: travel
