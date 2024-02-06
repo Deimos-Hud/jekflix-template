@@ -18,9 +18,9 @@ menu:
     url: /contact
   - title: Feed
     url: /feed.xml
-email: youremail@test.com
+email: hb
 # See: https://disqus.com/
 disqus_username: disqus_username
 # Contact Form Setting
 # See: https://formspree.io/
-formspree_form_id: hudsonbrock1@gmail.com
+formspree_form_id: f/xkndjqll
