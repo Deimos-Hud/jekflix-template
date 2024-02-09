@@ -4,10 +4,14 @@ description: Huddles House is based on a template for Jekyll inspired by Netflix
   Thiago Rossener.
 tags:
   - blog
-  - template
+  - AT
   - jekyll
   - theme
   - netlify
+  - Appalachian Trail
+  - Hiking
+  - Camping
+  - Through Hiking
 show_hero: true
 menu:
   - title: Home
@@ -20,7 +24,7 @@ menu:
     url: /feed.xml
 email: hb
 # See: https://disqus.com/
-disqus_username: disqus_username
+disqus_username: https-huddleshouse-netlify-app
 # Contact Form Setting
 # See: https://formspree.io/
 formspree_form_id: xkndjqll
