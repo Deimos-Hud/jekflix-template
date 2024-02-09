@@ -4,8 +4,8 @@ layout: post
 title: "Another AT Blog"
 subtitle: Or why I'm Hiking the AT
 description:
-image: https://imgur.com/a/T5CTcLx
-optimized_image: https://imgur.com/a/T5CTcLx
+image: https://imgur.com/RdfJpVQ
+optimized_image: https://imgur.com/RdfJpVQ
 category:
 tags:
 author: Hudson Brock
