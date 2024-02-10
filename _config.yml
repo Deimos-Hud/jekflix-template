@@ -1,15 +1,18 @@
 # Site Settings
-# I BELIEVE THIS DOES NOTHING
-name: Huddles Home
-title: Huddles Home | A blog theme for the Able
-description: This site is based on a template for Jekyll inspired by Netflix and made by
+name: Huddles House
+title: Huddles House | A blog for the AT
+description: Huddles House is based on a template for Jekyll inspired by Netflix and made by
   Thiago Rossener.
 tags:
   - blog
-  - template
+  - AT
   - jekyll
   - theme
   - netlify
+  - Appalachian Trail
+  - Hiking
+  - Camping
+  - Through Hiking
 show_hero: true
 menu:
   - title: Home
@@ -20,9 +23,9 @@ menu:
     url: /contact
   - title: Feed
     url: /feed.xml
-email: youremail@test.com
+email: hb
 # See: https://disqus.com/
-disqus_username: disqus_username
+disqus_username: https-huddleshouse-netlify-app
 # Contact Form Setting
 # See: https://formspree.io/
 formspree_form_id: xkndjqll
@@ -40,8 +43,8 @@ medium_username: medium_username
 
 # Posts Settings
 show_time_bar: true
-show_modal_on_exit: false
-show_modal_on_finish_post: true
+show_modal_on_exit: true
+show_modal_on_finish_post: false
 two_columns_layout: true
 
 
@@ -111,4 +114,4 @@ exclude: [
 ]
 
 # Theme
-version: v1
+version: v0.0.1
