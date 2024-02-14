@@ -5,7 +5,7 @@ name: Hudson Brock
 display_name: Hudson Brock
 position: The One
 bio: One part dm one part hiker
-github_username: github_username
+github_username: Deimos-Hud
 facebook_username: facebook_username
 twitter_username: twitter_username
 instagram_username: instagram_username
