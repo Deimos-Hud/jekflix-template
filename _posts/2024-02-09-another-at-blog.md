@@ -8,6 +8,7 @@ image: https://res.cloudinary.com/disol99xr/image/upload/v1707494180/l4qicuy4six
 optimized_image: https://res.cloudinary.com/disol99xr/image/upload/v1707494180/l4qicuy4six9tnpakwhe.jpg
 category:
 tags:
+
 author: Hudson Brock
 paginate: false
 ---
