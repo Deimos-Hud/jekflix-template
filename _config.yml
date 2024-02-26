@@ -1,5 +1,5 @@
 # Site Settings
-name: Hike The Hike
+name: Hike The Hike With Hudson
 title: Hike the Hike with Hudson | A blog for the AT
 description: Huddles House is based on a template for Jekyll inspired by Netflix and made by
   Thiago Rossener.
@@ -35,17 +35,17 @@ formspree_form_id: xkndjqll
 
 # Social Media Settings
 # Remove the item if you don't need it
-github_username: github_username
-facebook_username: facebook_username
-twitter_username: twitter_username
-instagram_username: instagram_username
-linkedin_username: linkedin_username
-medium_username: medium_username
+github_username: Deimos-Hud
+#facebook_username: facebook_username
+#twitter_username: twitter_username
+instagram_username: hikethehikeat
+#linkedin_username: linkedin_username
+#medium_username: medium_username
 
 
 # Posts Settings
 show_time_bar: true
-show_modal_on_exit: true
+show_modal_on_exit: false
 show_modal_on_finish_post: false
 two_columns_layout: true
 
@@ -116,4 +116,4 @@ exclude: [
 ]
 
 # Theme
-version: v0.0.1
+version: v1.0
