@@ -10,6 +10,6 @@ github_username: Deimos-Hud
 twitter_username: HudleAppalachia
 instagram_username: hikethehikeat
 #linkedin_username: linkedin_username
-#medium_username: medium_username
+medium_username: huddlehh
 ---
 
