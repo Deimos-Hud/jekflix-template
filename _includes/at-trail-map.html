@@ -1,0 +1,229 @@
+<!-- AT Trail Map Component -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+<div class="at-trail-map-container">
+  <div class="mb-4">
+    <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem;">Appalachian Trail Interactive Map</h2>
+    <p style="color: #6b7280; margin-bottom: 1rem;">Explore ALL trail locations from each blog post along the 2,190-mile journey</p>
+  </div>
+
+  <div class="map-wrapper" style="position: relative; width: 100%; height: 70vh; background-color: #f3f4f6; border-radius: 0.5rem; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+    <div id="at-map-container" style="width: 100%; height: 100%; min-height: 500px;"></div>
+    
+    <div id="at-filter-container" style="position: absolute; top: 1rem; right: 1rem; background: white; padding: 1rem; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); z-index: 1000; max-width: 200px;">
+      <h3 style="font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; color: #374151;">Filter by Type</h3>
+      <div class="filter-buttons" style="display: flex; flex-direction: column; gap: 0.25rem;">
+        <button class="at-filter-btn" data-type="all" style="display: flex; align-items: center; padding: 0.5rem; font-size: 0.875rem; border: none; border-radius: 0.25rem; background: #e5e7eb; cursor: pointer; text-align: left; font-weight: 600;">
+          <span style="width: 0.75rem; height: 0.75rem; border-radius: 50%; margin-right: 0.5rem; display: inline-block; background-color: #3b82f6;"></span>
+          <span>All Posts</span>
+        </button>
+        <button class="at-filter-btn" data-type="milestone" style="display: flex; align-items: center; padding: 0.5rem; font-size: 0.875rem; border: none; border-radius: 0.25rem; background: transparent; cursor: pointer; text-align: left;">
+          <span style="width: 0.75rem; height: 0.75rem; border-radius: 50%; margin-right: 0.5rem; display: inline-block; background-color: #f97316;"></span>
+          <span>Milestones</span>
+        </button>
+        <button class="at-filter-btn" data-type="state" style="display: flex; align-items: center; padding: 0.5rem; font-size: 0.875rem; border: none; border-radius: 0.25rem; background: transparent; cursor: pointer; text-align: left;">
+          <span style="width: 0.75rem; height: 0.75rem; border-radius: 50%; margin-right: 0.5rem; display: inline-block; background-color: #10b981;"></span>
+          <span>State Changes</span>
+        </button>
+        <button class="at-filter-btn" data-type="town" style="display: flex; align-items: center; padding: 0.5rem; font-size: 0.875rem; border: none; border-radius: 0.25rem; background: transparent; cursor: pointer; text-align: left;">
+          <span style="width: 0.75rem; height: 0.75rem; border-radius: 50%; margin-right: 0.5rem; display: inline-block; background-color: #f59e0b;"></span>
+          <span>Trail Towns</span>
+        </button>
+        <button class="at-filter-btn" data-type="park" style="display: flex; align-items: center; padding: 0.5rem; font-size: 0.875rem; border: none; border-radius: 0.25rem; background: transparent; cursor: pointer; text-align: left;">
+          <span style="width: 0.75rem; height: 0.75rem; border-radius: 50%; margin-right: 0.5rem; display: inline-block; background-color: #8b5cf6;"></span>
+          <span>National Parks</span>
+        </button>
+        <button class="at-filter-btn" data-type="regular" style="display: flex; align-items: center; padding: 0.5rem; font-size: 0.875rem; border: none; border-radius: 0.25rem; background: transparent; cursor: pointer; text-align: left;">
+          <span style="width: 0.75rem; height: 0.75rem; border-radius: 50%; margin-right: 0.5rem; display: inline-block; background-color: #6b7280;"></span>
+          <span>Trail Sections</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<script>
+var atMapInstance = null;
+var atMapMarkers = [];
+var atTrailLocations = [
+  { title: "Day 1", date: "2024-03-12", lat: 34.6264, lng: -84.1941, miles: "0-2.8", state: "Georgia", postUrl: "/Day-1/", description: "Springer Mountain, GA to Stover Creek Shelter - Southern terminus approach trail and first shelter", type: "milestone" },
+  { title: "Day 2-3", date: "2024-03-17", lat: 34.6851, lng: -83.9567, miles: "2.8-18.3", state: "Georgia", postUrl: "/Day-2-and-3/", description: "Gooch Gap, GA area - Sassafras Mountain, Cooper's Gap, Gooch Gap, Woody Gap, Blood Mountain, Neels Gap", type: "regular" },
+  { title: "Day 4-5", date: "2024-03-20", lat: 34.7455, lng: -83.7982, miles: "18.3-40.8", state: "Georgia", postUrl: "/Day-4-and-5/", description: "Low Gap Shelter to Tray Mountain, GA - Tesnatee Gap, Unicoi Gap, Rocky Mountain, Tray Mountain", type: "regular" },
+  { title: "Day 6", date: "2024-03-21", lat: 34.7588, lng: -83.6971, miles: "40.8-51.8", state: "Georgia", postUrl: "/Day-6/", description: "Dick's Creek Gap, GA - Kelly's Knob, Dick's Creek Gap, Around the Bend Hostel", type: "town" },
+  { title: "Day 7-9", date: "2024-03-24", lat: 35.1537, lng: -83.3967, miles: "51.8-100.0", state: "North Carolina", postUrl: "/Day-7,-8,-and-9/", description: "Albert Mountain, NC (100 Mile Mark) - GA/NC border crossing, Albert Mountain fire tower", type: "milestone" },
+  { title: "Day 10-11", date: "2024-03-28", lat: 35.2883, lng: -83.5642, miles: "100.0-131.0", state: "North Carolina", postUrl: "/Day-10-and-11/", description: "Wesser Bald, NC - Franklin NC resupply, Wayah Bald, Wesser Bald fire tower", type: "town" },
+  { title: "Day 12-13", date: "2024-03-28", lat: 35.6309, lng: -83.4985, miles: "131.0-165.0", state: "Tennessee", postUrl: "/Day-12-and-13/", description: "Great Smoky Mountains National Park, TN/NC - Clingmans Dome area, Smokies crossing", type: "park" },
+  { title: "Day 14-15", date: "2024-04-01", lat: 35.8984, lng: -82.8276, miles: "165.0-200.0", state: "North Carolina", postUrl: "/Day-14-and-15/", description: "Hot Springs, NC area - Approaching Hot Springs, NC", type: "town" },
+  { title: "Day 16-17", date: "2024-04-01", lat: 35.8984, lng: -82.8276, miles: "200.0-235.0", state: "North Carolina", postUrl: "/Day-16-and-17/", description: "Hot Springs, NC - Hot Springs trail town", type: "town" },
+  { title: "Day 18-19", date: "2024-04-12", lat: 36.1045, lng: -82.1234, miles: "235.0-270.0", state: "North Carolina", postUrl: "/Day-18-and-19/", description: "Central North Carolina mountains - NC mountain ridges", type: "regular" },
+  { title: "Day 20-21", date: "2024-04-11", lat: 36.1589, lng: -82.4193, miles: "270.0-305.0", state: "Tennessee", postUrl: "/Day-20-and-21/", description: "Erwin, TN area - Erwin, TN vicinity", type: "town" },
+  { title: "Day 22-23", date: "2024-04-16", lat: 36.6595, lng: -81.5456, miles: "305.0-340.0", state: "Virginia", postUrl: "/Day-22-and-23/", description: "Mount Rogers, VA area - High country, Mount Rogers area", type: "regular" },
+  { title: "Day 24-25", date: "2024-04-22", lat: 36.6382, lng: -81.7849, miles: "340.0-375.0", state: "Virginia", postUrl: "/Day-24-and-25/", description: "Damascus, VA area - Damascus 'Trail Town USA'", type: "state" },
+  { title: "Day 26-27", date: "2024-04-22", lat: 36.8234, lng: -81.2345, miles: "375.0-410.0", state: "Virginia", postUrl: "/Day-26-and-27/", description: "Virginia Blue Ridge - Virginia Blue Ridge Mountains", type: "regular" },
+  { title: "Day 28-29", date: "2024-04-24", lat: 37.1234, lng: -80.9876, miles: "410.0-445.0", state: "Virginia", postUrl: "/Day-28-and-29/", description: "Central Virginia - Central Virginia ridges", type: "regular" },
+  { title: "Day 30-31", date: "2024-04-27", lat: 37.3934, lng: -80.0781, miles: "445.0-480.0", state: "Virginia", postUrl: "/Day-30-and-31/", description: "McAfee Knob area - Virginia's most photographed spot on the AT", type: "milestone" },
+  { title: "Day 32-34", date: "2024-05-04", lat: 37.5234, lng: -79.8765, miles: "480.0-530.0", state: "Virginia", postUrl: "/Day-32-34/", description: "Virginia Blue Ridge - Virginia Blue Ridge Parkway crossings", type: "regular" },
+  { title: "Day 35-36", date: "2024-05-06", lat: 37.7234, lng: -79.6543, miles: "530.0-565.0", state: "Virginia", postUrl: "/Day-35-and-36/", description: "Virginia Mountains - Virginia mountain ridges", type: "regular" },
+  { title: "Day 37-38", date: "2024-05-09", lat: 37.8234, lng: -79.4321, miles: "565.0-600.0", state: "Virginia", postUrl: "/Day-37-and-38/", description: "Virginia Blue Ridge", type: "regular" },
+  { title: "Day 39-40", date: "2024-05-18", lat: 37.9234, lng: -79.2109, miles: "600.0-635.0", state: "Virginia", postUrl: "/Day-39-and-40/", description: "Virginia trail section", type: "regular" },
+  { title: "Day 41-42", date: "2024-05-18", lat: 38.0234, lng: -78.9876, miles: "635.0-670.0", state: "Virginia", postUrl: "/Day-41-and-42/", description: "Quarter Way Inn, VA - hostel, creek crossings", type: "town" },
+  { title: "Day 43-44", date: "2024-05-27", lat: 38.1234, lng: -78.7654, miles: "670.0-705.0", state: "Virginia", postUrl: "/Day-43-and-44/", description: "Virginia ridges", type: "regular" },
+  { title: "Day 45-46", date: "2024-05-28", lat: 38.2234, lng: -78.5432, miles: "705.0-740.0", state: "Virginia", postUrl: "/Day-45-and-46/", description: "Virginia Blue Ridge", type: "regular" },
+  { title: "Day 47-48", date: "2024-05-29", lat: 38.3234, lng: -78.3210, miles: "740.0-775.0", state: "Virginia", postUrl: "/Day-47-and-48/", description: "Virginia section", type: "regular" },
+  { title: "Day 48-49", date: "2024-06-02", lat: 38.4234, lng: -78.0987, miles: "775.0-810.0", state: "Virginia", postUrl: "/Day-48-and-49/", description: "Virginia ridges", type: "regular" },
+  { title: "Day 50-51", date: "2024-06-04", lat: 38.5267, lng: -78.4692, miles: "810.0-845.0", state: "Virginia", postUrl: "/Day-50-and-51/", description: "Approaching Shenandoah National Park, VA", type: "park" },
+  { title: "Day 52-53", date: "2024-06-12", lat: 38.6267, lng: -78.3692, miles: "845.0-880.0", state: "Virginia", postUrl: "/Day-52-and-53/", description: "Shenandoah National Park, VA", type: "park" },
+  { title: "Day 54-55", date: "2024-06-13", lat: 38.7267, lng: -78.2692, miles: "880.0-915.0", state: "Virginia", postUrl: "/Day-54-and-55/", description: "Shenandoah National Park, VA", type: "park" },
+  { title: "Day 56-57", date: "2024-06-16", lat: 38.8267, lng: -78.1692, miles: "915.0-950.0", state: "Virginia", postUrl: "/Day-56-and-57/", description: "Shenandoah National Park, VA", type: "park" },
+  { title: "Day 58-59", date: "2024-06-19", lat: 38.9267, lng: -78.0692, miles: "950.0-985.0", state: "Virginia", postUrl: "/Day-58-and-59/", description: "Northern Shenandoah National Park, VA", type: "park" },
+  { title: "Day 60-63", date: "2024-06-22", lat: 39.2267, lng: -77.8692, miles: "985.0-1040.0", state: "Virginia", postUrl: "/Day-60-through-63/", description: "Shenandoah exit, approaching Harpers Ferry", type: "regular" },
+  { title: "Day 64-66", date: "2024-06-25", lat: 39.3251, lng: -77.7405, miles: "1040.0-1070.0", state: "West Virginia", postUrl: "/Day-64-through-66/", description: "Harpers Ferry, WV - psychological halfway point and ATC headquarters", type: "milestone" },
+  { title: "Day 67-68", date: "2024-06-26", lat: 39.4251, lng: -77.6405, miles: "1070.0-1105.0", state: "Maryland", postUrl: "/Day-67-and-68/", description: "Maryland section", type: "regular" },
+  { title: "Day 69-70", date: "2024-06-26", lat: 39.5251, lng: -77.5405, miles: "1105.0-1140.0", state: "Pennsylvania", postUrl: "/Day-69-and-70/", description: "Maryland/Pennsylvania border - entering Pennsylvania", type: "state" },
+  { title: "Day 71-72", date: "2024-07-07", lat: 39.8251, lng: -76.9405, miles: "1140.0-1175.0", state: "Pennsylvania", postUrl: "/Day-71-and-72/", description: "Pennsylvania rocky terrain", type: "regular" },
+  { title: "Day 73-74", date: "2024-07-14", lat: 40.1251, lng: -76.5405, miles: "1175.0-1210.0", state: "Pennsylvania", postUrl: "/Day-73-and-74/", description: "Pennsylvania rocks", type: "regular" },
+  { title: "Day 75-76", date: "2024-07-16", lat: 40.4251, lng: -76.1405, miles: "1210.0-1245.0", state: "Pennsylvania", postUrl: "/Day-75-and-76/", description: "Pennsylvania section", type: "regular" },
+  { title: "Day 77-79", date: "2024-07-24", lat: 40.7251, lng: -75.7405, miles: "1245.0-1295.0", state: "Pennsylvania", postUrl: "/Day-77-through-79/", description: "Pennsylvania rocks", type: "regular" },
+  { title: "Day 80-81", date: "2024-07-25", lat: 40.8651, lng: -75.1405, miles: "1295.0-1330.0", state: "New Jersey", postUrl: "/Day-80-and-81/", description: "Pennsylvania/New Jersey border - Delaware Water Gap area", type: "state" },
+  { title: "Day 82-83", date: "2024-08-02", lat: 40.9651, lng: -74.8405, miles: "1330.0-1365.0", state: "New Jersey", postUrl: "/Day-82-and-83/", description: "New Jersey section", type: "regular" },
+  { title: "Day 84-85", date: "2024-08-05", lat: 41.0651, lng: -74.5405, miles: "1365.0-1400.0", state: "New Jersey", postUrl: "/Day-84-and-85/", description: "New Jersey boardwalks", type: "regular" },
+  { title: "Day 88-89", date: "2024-08-10", lat: 41.1651, lng: -74.2405, miles: "1400.0-1435.0", state: "New Jersey", postUrl: "/Day-88-and-89/", description: "New Jersey section", type: "regular" },
+  { title: "Day 89", date: "2024-08-12", lat: 41.2151, lng: -74.1405, miles: "1435.0-1450.0", state: "New Jersey", postUrl: "/Day-89/", description: "New Jersey", type: "regular" },
+  { title: "Day 90", date: "2024-08-15", lat: 41.2651, lng: -74.0405, miles: "1450.0-1477.5", state: "New York", postUrl: "/Day-90/", description: "New Jersey/New York border - Pochuck Boardwalk, entering New York, Prospect Rock", type: "state" },
+  { title: "Day 91", date: "2024-08-16", lat: 41.3651, lng: -73.9405, miles: "1477.5-1505.0", state: "New York", postUrl: "/Day-91/", description: "New York rocky terrain, Wildcat Shelter", type: "regular" },
+  { title: "Day 92-93", date: "2024-08-17", lat: 41.4651, lng: -73.7405, miles: "1505.0-1540.0", state: "New York", postUrl: "/Day-92-and-93/", description: "New York section", type: "regular" },
+  { title: "Day 94-95", date: "2024-08-18", lat: 41.5651, lng: -73.5405, miles: "1540.0-1575.0", state: "New York", postUrl: "/Day-94-and-95/", description: "New York rocks", type: "regular" },
+  { title: "Day 96", date: "2024-08-24", lat: 41.6651, lng: -73.4405, miles: "1575.0-1590.0", state: "Connecticut", postUrl: "/Day-96/", description: "New York/Connecticut border - entering Connecticut", type: "state" },
+  { title: "Day 97-98", date: "2024-08-29", lat: 41.7651, lng: -73.3405, miles: "1590.0-1625.0", state: "Connecticut", postUrl: "/Day-97-and-98/", description: "Connecticut section", type: "regular" },
+  { title: "Day 99", date: "2024-09-02", lat: 41.8651, lng: -73.2405, miles: "1625.0-1640.0", state: "Connecticut", postUrl: "/Day-99/", description: "Connecticut", type: "regular" },
+  { title: "Day 100", date: "2024-09-12", lat: 41.9651, lng: -73.1405, miles: "1640.0-1655.0", state: "Connecticut", postUrl: "/Day-100/", description: "Day 100 milestone in Connecticut", type: "milestone" },
+  { title: "Day 101-102", date: "2024-09-21", lat: 42.0651, lng: -73.0405, miles: "1655.0-1690.0", state: "Massachusetts", postUrl: "/Day-101-and-102/", description: "Connecticut/Massachusetts border - entering Massachusetts", type: "state" },
+  { title: "Day 103", date: "2024-09-21", lat: 42.1651, lng: -72.9405, miles: "1690.0-1705.0", state: "Massachusetts", postUrl: "/Day-103/", description: "Massachusetts section", type: "regular" },
+  { title: "Day 104", date: "2024-10-08", lat: 42.2651, lng: -72.8405, miles: "1705.0-1720.0", state: "Massachusetts", postUrl: "/Day-104/", description: "Massachusetts", type: "regular" },
+  { title: "Day 105-106", date: "2024-10-12", lat: 42.3651, lng: -72.7405, miles: "1720.0-1755.0", state: "Massachusetts", postUrl: "/Day-105-and-106/", description: "Massachusetts section", type: "regular" },
+  { title: "Day 107-108", date: "2024-11-03", lat: 42.4651, lng: -72.6405, miles: "1755.0-1790.0", state: "Vermont", postUrl: "/Day-107-and-108/", description: "Massachusetts/Vermont border - entering Vermont", type: "state" },
+  { title: "Day 109-110", date: "2024-11-16", lat: 42.5651, lng: -72.5405, miles: "1790.0-1825.0", state: "Vermont", postUrl: "/Day-109-and-110/", description: "Vermont Green Mountains", type: "regular" },
+  { title: "Day 111", date: "2024-11-30", lat: 42.6651, lng: -72.4405, miles: "1825.0-1840.0", state: "Vermont", postUrl: "/Day-111/", description: "Vermont section", type: "regular" },
+  { title: "Day 112-113", date: "2024-12-17", lat: 42.7651, lng: -72.3405, miles: "1840.0-1875.0", state: "Vermont", postUrl: "/Day-112-and-113/", description: "Vermont Green Mountains", type: "regular" },
+  { title: "Day 115-116", date: "2024-12-23", lat: 42.8651, lng: -72.2405, miles: "1875.0-1910.0", state: "Vermont", postUrl: "/Day-115-and-116/", description: "Vermont section", type: "regular" },
+  { title: "Day 117-118", date: "2024-12-23", lat: 42.9651, lng: -72.1405, miles: "1910.0-1945.0", state: "New Hampshire", postUrl: "/Day-117-and-118/", description: "Vermont/New Hampshire border - entering New Hampshire", type: "state" },
+  { title: "Day 119-120", date: "2025-03-03", lat: 43.0651, lng: -72.0405, miles: "1945.0-1980.0", state: "New Hampshire", postUrl: "/Day-119-and-120/", description: "New Hampshire section", type: "regular" },
+  { title: "Day 121-122", date: "2025-05-13", lat: 43.1651, lng: -71.9405, miles: "1980.0-2015.0", state: "New Hampshire", postUrl: "/Day-121-and-122/", description: "New Hampshire", type: "regular" },
+  { title: "Day 123-124", date: "2025-05-14", lat: 44.2706, lng: -71.3036, miles: "2015.0-2050.0", state: "New Hampshire", postUrl: "/Day-123-and-124/", description: "New Hampshire White Mountains - Mount Washington area, highest peak in the Northeast", type: "milestone" },
+  { title: "Day 125-126", date: "2025-05-16", lat: 44.3706, lng: -71.2036, miles: "2050.0-2085.0", state: "New Hampshire", postUrl: "/Day-125-and-126/", description: "New Hampshire White Mountains", type: "regular" },
+  { title: "Day 127-128", date: "2025-05-18", lat: 44.4706, lng: -71.1036, miles: "2085.0-2120.0", state: "Maine", postUrl: "/Day-127-and-128/", description: "New Hampshire/Maine border - entering Maine", type: "state" },
+  { title: "Day 129", date: "2025-07-09", lat: 45.0044, lng: -70.2785, miles: "2120.0-2140.0", state: "Maine", postUrl: "/Day-129/", description: "Maine section, Saddleback area, crossing 2000 mile marker", type: "milestone" },
+  { title: "Mount Katahdin", date: "2025-07-20", lat: 45.9044, lng: -69.2785, miles: "2190.0", state: "Maine", postUrl: "/atblog/", description: "Mount Katahdin - Northern terminus of the Appalachian Trail", type: "milestone" }
+];
+
+function getATMarkerColor(type) {
+  if (type === 'milestone') {
+    return '#f97316';
+  }
+  if (type === 'state') {
+    return '#10b981';
+  }
+  if (type === 'town') {
+    return '#f59e0b';
+  }
+  if (type === 'park') {
+    return '#8b5cf6';
+  }
+  if (type === 'regular') {
+    return '#6b7280';
+  }
+  return '#3b82f6';
+}
+
+function initializeATMap() {
+  var mapContainer = document.getElementById('at-map-container');
+  if (!mapContainer) {
+    console.log('Map container not found');
+    return;
+  }
+  
+  if (atMapInstance) {
+    atMapInstance.remove();
+  }
+  
+  console.log('Creating complete AT blog post map...');
+  atMapInstance = L.map('at-map-container').setView([39.0, -78.0], 5);
+  
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(atMapInstance);
+  
+  atMapMarkers = [];
+  
+  var i = 0;
+  for (i = 0; i < atTrailLocations.length; i++) {
+    var location = atTrailLocations[i];
+    var color = getATMarkerColor(location.type);
+    
+    var marker = L.circleMarker([location.lat, location.lng], {
+      color: color,
+      fillColor: color,
+      fillOpacity: 0.8,
+      radius: 6
+    }).addTo(atMapInstance);
+    
+    var popupContent = '<h3>' + location.title + '</h3>' +
+                      '<p><strong>State:</strong> ' + location.state + '</p>' +
+                      '<p><a href="' + location.postUrl + '" target="_blank">Read Blog Post →</a></p>';
+    marker.bindPopup(popupContent);
+    
+    atMapMarkers.push({
+      marker: marker,
+      type: location.type
+    });
+  }
+  
+  setupATFilters();
+  console.log('Complete AT blog post map initialized with ' + atMapMarkers.length + ' markers');
+}
+
+function setupATFilters() {
+  var filterButtons = document.querySelectorAll('.at-filter-btn');
+  
+  var i = 0;
+  for (i = 0; i < filterButtons.length; i++) {
+    var button = filterButtons[i];
+    button.onclick = function() {
+      var type = this.getAttribute('data-type');
+      
+      var allButtons = document.querySelectorAll('.at-filter-btn');
+      var j = 0;
+      for (j = 0; j < allButtons.length; j++) {
+        allButtons[j].style.background = 'transparent';
+        allButtons[j].style.fontWeight = 'normal';
+      }
+      this.style.background = '#e5e7eb';
+      this.style.fontWeight = '600';
+      
+      var k = 0;
+      for (k = 0; k < atMapMarkers.length; k++) {
+        var item = atMapMarkers[k];
+        if (type === 'all' || item.type === type) {
+          atMapInstance.addLayer(item.marker);
+        } else {
+          atMapInstance.removeLayer(item.marker);
+        }
+      }
+    };
+  }
+}
+
+function startATMap() {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(initializeATMap, 700);
+    });
+  } else {
+    setTimeout(initializeATMap, 700);
+  }
+}
+
+startATMap();
+</script> 
