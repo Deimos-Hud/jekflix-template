@@ -20,8 +20,6 @@ menu:
     url: /about
   - title: Contact
     url: /contact
-  - title: Feed
-    url: /feed.xml
   - title: AT Map
     url: /atmap
 email: hb
