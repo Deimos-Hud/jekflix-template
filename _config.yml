@@ -22,8 +22,8 @@ menu:
     url: /contact
   - title: Feed
     url: /feed.xml
-  - title: AT Blog
-    url: /atblog
+  - title: AT Map
+    url: /atmap
 email: hb
 # See: https://disqus.com/
 disqus_username: https-huddleshouse-netlify-app
