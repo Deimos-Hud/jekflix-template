@@ -4,7 +4,7 @@ menu: true
 date: '2020-02-27 01:53:59'
 title: AT Blog
 description: Follow the Appalachian Trail journey with interactive maps and trail updates.
-permalink: /atblog/
+permalink: /atmap/
 ---
 
 <img class="img-thumbnail" src="/assets/img/uploads/IMG_6994_Original.jpg" alt="Appalachian Trail Hiker" width="200">
