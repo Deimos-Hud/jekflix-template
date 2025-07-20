@@ -27,7 +27,7 @@ email: hb
 disqus_username: https-huddleshouse-netlify-app
 # Contact Form Setting
 # See: https://formspree.io/
-formspree_form_id:
+formspree_form_id: xkndjqll
 
 
 # Social Media Settings
@@ -35,9 +35,10 @@ formspree_form_id:
 github_username: Deimos-Hud
 #facebook_username: facebook_username
 twitter_username: HudleAppalachia
-instagram_username: hikethehikeat
+instagram_username: Huddlehikes
 #linkedin_username: linkedin_username
 #medium_username: medium_username
+discord_url: "https://discord.gg/Y8CE4BykxF"  # Add your Discord invite link here
 
 
 # Posts Settings
@@ -113,4 +114,4 @@ exclude: [
 ]
 
 # Theme
-version: v1.0
+version: v1.1

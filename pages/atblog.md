@@ -7,7 +7,6 @@ description: Follow the Appalachian Trail journey with interactive maps and trai
 permalink: /atmap/
 ---
 
-<img class="img-thumbnail" src="/assets/img/uploads/IMG_6994_Original.jpg" alt="Appalachian Trail Hiker" width="200">
 
 
 ## Interactive Trail Map

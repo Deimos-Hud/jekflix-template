@@ -15,6 +15,15 @@ layout: page
 
   <h2>{{ site.translations.contact.title | default: "Talk to me" }}</h2>
 
+  {% if site.discord_url %}
+    <p class="discord-invite">
+      <a href="{{ site.discord_url }}" target="_blank" rel="noopener" class="button">
+        <svg><use xlink:href="#icon-discord"></use></svg>
+        <span>Join our Discord</span>
+      </a>
+    </p>
+  {% endif %}
+
   <div id="form" class="contact-form">
     <form accept-charset="UTF-8" method="POST" action="https://formspree.io/{% if site.formspree_form_id %}f/{{ site.formspree_form_id }}{% else %}{{ site.email }}{% endif %}" v-on:submit.prevent="validateBeforeSubmit" ref="contact">
       <fieldset>

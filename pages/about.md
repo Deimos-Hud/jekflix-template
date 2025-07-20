@@ -11,4 +11,4 @@ permalink: /about/
 
 # About
 
-Computer Engineering Major, and long time enjoyer of the outdoors. Get ready AT, here I come
+A blog about hiking, camping and more. Completed the AT Northbound in 2024.
