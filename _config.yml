@@ -27,7 +27,7 @@ email: hb
 disqus_username: https-huddleshouse-netlify-app
 # Contact Form Setting
 # See: https://formspree.io/
-formspree_form_id:
+formspree_form_id: https://formspree.io/f/xkndjqll
 
 
 # Social Media Settings
